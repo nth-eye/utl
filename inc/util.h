@@ -7,6 +7,19 @@
 namespace util {
 
 /**
+ * @brief Helper to get number of elements in array. 
+ * 
+ * @tparam T Auto-deduced element type
+ * @tparam N Auto-deduced number of elements
+ * @return Array size
+ */
+template<class T, size_t N>
+constexpr size_t countof(T(&)[N]) 
+{ 
+    return N; 
+}
+
+/**
  * @brief Get number of bytes required to store N bits.
  * 
  * @param n Number of bits to store
@@ -97,6 +110,147 @@ constexpr void clr_arr_bit(uint8_t *arr, int n)
 }
 
 /**
+ * @brief Unsigned integer division with round up.
+ * 
+ * @tparam T Unsigned integer type
+ * @param dividend Unsigned
+ * @param divisor Unsigned, can be 0
+ * @return Quotient
+ */
+template<class T>
+constexpr T uceil(T dividend, T divisor)
+{
+    return divisor ? (dividend + (divisor - 1)) / divisor : 0;
+}
+
+/**
+ * @brief Map integer from one range to another.
+ * 
+ * @tparam T Integer type
+ * @param val Input value
+ * @param in_min Input minimum
+ * @param in_max Input maximum
+ * @param out_min Output range minimum 
+ * @param out_max Output range maximum
+ * @return Result
+ */
+template<class T>
+constexpr T imap(T val, T in_min, T in_max, T out_min, T out_max)
+{
+    double slope = 1.0 * (out_max - out_min) / (in_max - in_min);
+    return out_min + slope * (val - in_min);
+}
+
+/**
+ * @brief Integer power function.
+ * 
+ * @tparam T Integer type
+ * @param base Base
+ * @param exp Exponent
+ * @return 'base' to the power 'exp'
+ */
+template<class T>
+constexpr T ipow(T base, T exp)
+{
+    T res = 1;
+    while (exp) {
+        if (exp & 1)
+            res *= base;
+        base *= base;
+        exp >>= 1;
+    }
+    return res;
+}
+
+/**
+ * @brief Get length of integer in symbols. 10 => 2, 100 => 3, etc.
+ * 
+ * @tparam T Integer type
+ * @param val Integer value
+ * @return Length  
+ */
+template<class T>
+constexpr T ilen(T val)
+{
+    T l = !val;
+    while (val) { 
+        ++l; 
+        val /= 10; 
+    }
+    return l;
+}
+
+/**
+ * @brief Factorial.
+ * 
+ * @tparam T Integer type
+ * @param x Argument
+ * @return Result
+ */
+template<class T>
+constexpr T fact(T x)
+{
+    T res = x;
+    while (--x) 
+        res *= x;
+    return res;
+}
+
+/**
+ * @brief Shift bits left in array of integer elements from least significant bit 
+ * and considering 0-th byte as the right most.
+ * uint16_t example: 0b10000000'11100001 ==> 0b00000001'11000010. 
+ * 
+ * @tparam T Integer type
+ * @tparam L Length of array
+ * @param x Array of integers, nullptr not acceptable!
+ * @param len Number of elements
+ */
+template<class T, size_t L>
+constexpr void shift_left(T (&x)[L])
+{
+    for (int i = L - 1; i > 0; --i) {
+        x[i] <<= 1;
+        x[i] |= x[i - 1] >> (sizeof(T) * 8 - 1);
+    }
+    x[0] <<= 1;
+}
+
+/**
+ * @brief Convert string to double, malformed input returns 0.
+ * 
+ * @param str Input string
+ * @param len String length
+ * @return Result 
+ */
+constexpr double str_to_dbl(const char *str, size_t len)
+{
+    if (!str || !len)
+        return 0;
+
+    const auto end = str + len;
+    double neg = 1;
+    double res = 0;
+    int dot = 0;
+
+    if (*str == '-') {
+        str += 1;
+        neg = -1;
+    }
+
+    for (; str != end; ++str) {
+        if (*str >= '0' && *str <= '9') {
+            res = res * 10.0 + (*str - '0');
+        } else {
+            if (*str != '.' || dot)
+                return 0;
+            dot = end - str - 1;
+        }
+    }
+    return res * neg / ipow(10, dot);
+}
+
+/**
  * @brief Convert string with hexadecimal characters ('0'...'F') to array of bytes.
  * All non-hex chars will be mapped as 0. String with odd length will be interpeted
  * as with prepended '0', e.g. "fff" --> "0fff". Works with both upper and lower cases.
@@ -108,7 +262,7 @@ constexpr void clr_arr_bit(uint8_t *arr, int n)
  * @param max_bin_len Output array max size 
  * @return Length of resulting array, 0 if failed
  */
-constexpr size_t hex_to_bin(const char *str, size_t str_len, uint8_t *bin, size_t max_bin_len)
+constexpr size_t str_to_bin(const char *str, size_t str_len, uint8_t *bin, size_t max_bin_len)
 {
     if (!str || !bin)
         return 0;
@@ -163,7 +317,7 @@ constexpr size_t hex_to_bin(const char *str, size_t str_len, uint8_t *bin, size_
  * @param max_str_len Output string maximum length, including 0-terminator
  * @return Resulting string length, 0 if failed
  */
-constexpr size_t bin_to_hex(const uint8_t *bin, size_t bin_len, char *str, size_t max_str_len)
+constexpr size_t bin_to_str(const uint8_t *bin, size_t bin_len, char *str, size_t max_str_len)
 {
     const char map[]= "0123456789abcdef";
 
@@ -184,20 +338,6 @@ constexpr size_t bin_to_hex(const uint8_t *bin, size_t bin_len, char *str, size_
     *str = 0;
 
     return str_len;
-}
-
-/**
- * @brief Unsigned integer division with round up.
- * 
- * @tparam T Integer type
- * @param dividend 
- * @param divisor 
- * @return Quotient
- */
-template<class T>
-constexpr T div_round_up(T dividend, T divisor)
-{
-    return divisor ? (dividend + (divisor - 1)) / divisor : 0;
 }
 
 }
