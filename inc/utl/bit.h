@@ -2,6 +2,9 @@
 #define UTL_BIT_H
 
 #include "utl/base.h"
+#if __cplusplus >= 202002L
+#include <bit>
+#endif
 
 namespace utl {
 
@@ -114,6 +117,28 @@ constexpr void shift_left(T (&x)[L])
     }
     x[0] <<= 1;
 }
+
+#if __cplusplus >= 202002L
+
+/**
+ * @brief Bit iterator, iterates through indexes of set bits of integer.
+ * 
+ * @tparam T Integer type
+ */
+template<class T>
+struct BitIter {
+    constexpr BitIter(T x) : x{x} {}
+    constexpr BitIter begin() const     { return x; }
+    constexpr BitIter end() const       { return 0; }
+    constexpr auto operator*() const    { return std::countr_zero(x); }
+    constexpr auto operator++()         { x &= x - 1; }
+    constexpr bool operator!=(const BitIter&) const = default;
+    constexpr bool operator==(const BitIter&) const = default;
+private:
+    T x;
+};
+
+#endif
 
 }
 

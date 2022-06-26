@@ -1,21 +1,12 @@
-#include <cstring>
-#include <cstdio>
-#include <ctime>
-#include <chrono>
-#include <thread>
 #include "utl/utl.h"
 
 int main()
 {
-    auto test = []()
-    {
-        for (int i = 0; i < 1000000000; ++i);
-    };
+    // printf("1: %3ld clock_t\n", utl::exec_time<10000>(utl::log_hex, arr, sizeof(arr)));
+    // printf("2: %3ld clock_t\n", utl::exec_time<10000>(utl::log_hex_putchar, arr, sizeof(arr)));
 
-    printf("1: %3ld clock_t\n", utl::exec_time<10>(test));
-    printf("2: %3ld clock_t\n", utl::exec_time_avg<10>(test));
+    uint8_t arr[17] = { 0x54, 0x01, 0x00, 0x34 };
 
-    // uint8_t arr[] = { 0x54, 0x00, 0x34 };
-
-    // utl::log_bits(arr, sizeof(arr) * 8, 0);
+    // utl::log_hex(arr, sizeof(arr));
+    utl::log_bits(arr, sizeof(arr) * 8 - 0, 0);
 }

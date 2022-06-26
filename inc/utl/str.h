@@ -6,6 +6,17 @@
 namespace utl {
 
 /**
+ * @brief Convert integer to hexadecimal character.
+ * 
+ * @param bin Byte value
+ * @return Hexadecimal character 
+ */
+constexpr char bin_to_char(uint8_t bin)
+{
+    return "0123456789abcdef"[bin & 0xf];
+}
+
+/**
  * @brief Convert string to double, malformed input returns 0.
  * 
  * @param str Input string
@@ -108,8 +119,6 @@ constexpr size_t str_to_bin(const char *str, size_t str_len, uint8_t *bin, size_
  */
 constexpr size_t bin_to_str(const uint8_t *bin, size_t bin_len, char *str, size_t max_str_len)
 {
-    const char map[]= "0123456789abcdef";
-
     if (!str || !bin || !bin_len || !max_str_len)
         return 0;
 
@@ -121,8 +130,8 @@ constexpr size_t bin_to_str(const uint8_t *bin, size_t bin_len, char *str, size_
     }
 
     for (size_t i = 0; i < bin_len; ++i) {
-        *str++ = map[bin[i] >> 4];
-        *str++ = map[bin[i] & 0xf];
+        *str++ = bin_to_char(bin[i] >> 4);
+        *str++ = bin_to_char(bin[i] & 0xf);
     }
     *str = 0;
 
