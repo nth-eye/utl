@@ -26,10 +26,10 @@ inline void log_hex_impl(const void *data, size_t len, void (*line_begin_cb)(con
             putchar(' ');
 
         if ((i & 15) == 15) {
-            printf("|");
+            putchar('|');
             for (int j = 15; j >= 0; --j) {
                 char c = p[i - j];
-                printf("%c", isprint(c) ? c : '.');
+                putchar(isprint(c) ? c : '.');
             }
             printf("|\n");
         }
@@ -39,7 +39,7 @@ inline void log_hex_impl(const void *data, size_t len, void (*line_begin_cb)(con
         printf("%*c |", (16 - rem) * 3 + ((~rem & 8) >> 3), ' ');
         for (int j = rem; j; --j) {
             char c = p[len - j];
-            printf("%c", isprint(c) ? c : '.');
+            putchar(isprint(c) ? c : '.');
         }
         for (int j = 0; j < 16 - rem; ++j)
             putchar('.');
@@ -79,7 +79,7 @@ inline void log_bits(const void *data, size_t len, size_t pos)
         else
             clr_arr_bit(line, i & 63);
             
-        if (i == len - 1 && rem) {
+        if (rem && i == len - i) {
             uint8_t c = line[(i & 63) >> 3];
             for (int j = rem - 1; j >= 0; --j)
                 putchar(get_bit(c, j) + '0');
@@ -89,14 +89,14 @@ inline void log_bits(const void *data, size_t len, size_t pos)
             uint8_t c = line[(i & 63) >> 3];
             for (int j = 7; j >= 0; --j)
                 putchar(get_bit(c, j) + '0');
-            printf(" ");
+            putchar(' ');
         }
 
         if ((i & 63) == 63) {
             printf(" |");
             for (int j = 0; j < 8; ++j) {
                 char c = line[j];
-                printf("%c", isprint(c) ? c : '.');
+                putchar(isprint(c) ? c : '.');
             }
             printf("|\n");
         }
@@ -113,10 +113,10 @@ inline void log_bits(const void *data, size_t len, size_t pos)
 
         for (int j = 0; j < rem_bytes; ++j) {
             char c = line[j];
-            printf("%c", isprint(c) ? c : '.');
+            putchar(isprint(c) ? c : '.');
         }
         if (rem)
-            printf(".");
+            putchar('.');
         for (int j = 0; j < fill_bytes; ++j)
             putchar('.');
         printf("|\n");
@@ -137,6 +137,13 @@ inline void log_hex(const void *data, size_t len)
     detail::log_hex_impl(data, len, cb);
 }
 
+/**
+ * @brief Print hex nicely with relevant ASCII representation and 
+ * memory address column.
+ * 
+ * @param data Data to print
+ * @param len Length in bytes
+ */
 inline void log_hex_with_addr(const void *data, size_t len)
 {
     printf("[%08llx]: %lu bytes \n", (long long unsigned) data, len);

@@ -1,18 +1,18 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(util VERSION 0.1.0)
+project(utl VERSION 0.1.0)
 
 add_library(libutl INTERFACE)
-target_compile_features(libutl INTERFACE cxx_std_11)
+target_compile_features(libutl INTERFACE cxx_std_17)
 target_compile_options(libutl INTERFACE "-Wall" "-Wextra" "-Wpedantic")
 target_include_directories(libutl INTERFACE inc)
 
 add_executable(utl main.cpp)
-target_compile_features(utl PUBLIC cxx_std_11)
-target_link_libraries(utl PUBLIC libutl)
+target_compile_features(utl PRIVATE cxx_std_17)
+target_link_libraries(utl PRIVATE libutl)
 
-add_executable(utltest test/test_utl.cpp)
-target_compile_features(utltest PUBLIC cxx_std_11)
-target_link_libraries(utltest PUBLIC gtest_main libutl)
+add_executable(testutl test/utl.cpp)
+target_compile_features(testutl PRIVATE cxx_std_17)
+target_link_libraries(testutl PRIVATE gtest_main libutl)
 
 enable_testing()
 include(FetchContent)
@@ -20,4 +20,4 @@ FetchContent_Declare(googletest URL https://github.com/google/googletest/archive
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 include(GoogleTest)
-gtest_discover_tests(utltest)
+gtest_discover_tests(testutl)
