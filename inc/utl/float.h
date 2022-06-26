@@ -64,6 +64,10 @@ constexpr uint32_t u32_cntlz(uint32_t x)
 
 }
 
+/**
+ * @brief Union to access bit patterns of floating point numbers.
+ * 
+ */
 union Float {
     constexpr Float() : u64{0} {};
     constexpr Float(float f) : f32{f} {}
@@ -78,7 +82,13 @@ union Float {
     double      f64;
 };
 
-constexpr uint16_t half_from_float(uint32_t f)
+/**
+ * @brief Convert single precision floating point to half precision.
+ * 
+ * @param f Single stored as uint32_t
+ * @return Half stored as uint16_t
+ */
+constexpr uint16_t float_to_half(uint32_t f)
 {
     using namespace detail;
 
@@ -144,6 +154,12 @@ constexpr uint16_t half_from_float(uint32_t f)
     return h_result;
 }
 
+/**
+ * @brief Convert half precision floating point to single precision.
+ * 
+ * @param h Half stored as uint16_t
+ * @return Single stored as uint32_t
+ */
 constexpr uint32_t half_to_float(uint16_t h)
 {
     using namespace detail;
@@ -193,18 +209,30 @@ constexpr uint32_t half_to_float(uint16_t h)
     return f_result;
 }
 
+/**
+ * @brief Convert double precision floating point to half precision.
+ * 
+ * @param d Double stored as uint64_t
+ * @return Half stored as uint16_t
+ */
+constexpr uint16_t double_to_half(uint64_t d)
+{
+    Float fp = d;
+    fp.f32 = fp.f64;
+    return float_to_half(fp.u32);
+}
+
+/**
+ * @brief Convert half precision floating point to double precision.
+ * 
+ * @param h Half stored as uint16_t
+ * @return Double stored as uint64_t
+ */
 constexpr uint64_t half_to_double(uint16_t h)
 {
     Float fp = half_to_float(h);
     fp.f64 = fp.f32;
     return fp.u64;
-}
-
-constexpr uint16_t half_from_double(uint64_t d)
-{
-    Float fp = d;
-    fp.f32 = fp.f64;
-    return half_from_float(fp.f32);
 }
 
 }
