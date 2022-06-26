@@ -82,12 +82,11 @@ inline void log_bits(const void *data, size_t len, size_t pos)
         if (!(i & 63)) {
             putchar('|');
             putchar(' ');
+            for (auto &c : line) c = 0;
         }
 
         if (get_arr_bit(ptr, pos++))
             set_arr_bit(line, i & 63);
-        else
-            clr_arr_bit(line, i & 63);
             
         if (rem && i == len - 1) {
             uint8_t c = line[(i & 63) >> 3];
