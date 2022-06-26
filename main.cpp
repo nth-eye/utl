@@ -2,9 +2,18 @@
 
 int main()
 {
-    // printf("1: %3ld clock_t\n", utl::exec_time<1000000>(utl::bin_to_char, 0x42));
+    utl::svector<uint8_t, 4> vec;
 
-    uint8_t arr[9] = { 0x54, 0x01, 0x00, 0x34 };
+    vec.push_back(0x54);
+    vec.push_back(0x01);
+    vec.push_back(0x00);
+    vec.push_back(0x69);
 
-    utl::log_bits(arr, sizeof(arr) * 8 - 0, 0);
+    for (auto &x : vec) 
+        utl::log_bits(&x, sizeof(x) * 8 - 0, 0);
+
+    vec.erase(&vec[2]);
+
+    for (auto &x : vec) 
+        utl::log_bits(&x, sizeof(x) * 8 - 0, 0);
 }
