@@ -16,20 +16,21 @@ clock_t measure_time(Fn &&fn, Args &&...args)
 
 int main()
 {
-    const char *str = "666.1239876";
-    const size_t len = strlen(str);
 
-    // printf("1: %3ld clock_t\n", measure_time<100000000>(util::str_to_dbl, str, len));
-    // printf("2: %3ld clock_t\n", measure_time<100000000>(util::str_to_float, str, len));
-    // printf("1: %3ld clock_t\n", measure_time<100000000>(util::str_to_dbl, str, len));
-    // printf("2: %3ld clock_t\n", measure_time<100000000>(util::str_to_float, str, len));
-    // printf("1: %3ld clock_t\n", measure_time<100000000>(util::str_to_dbl, str, len));
-    // printf("2: %3ld clock_t\n", measure_time<100000000>(util::str_to_float, str, len));
-    // printf("1: %3ld clock_t\n", measure_time<100000000>(util::str_to_dbl, str, len));
-    // printf("2: %3ld clock_t\n", measure_time<100000000>(util::str_to_float, str, len));
-    // printf("1: %3ld clock_t\n", measure_time<100000000>(util::str_to_dbl, str, len));
-    // printf("2: %3ld clock_t\n", measure_time<100000000>(util::str_to_float, str, len));
+    // printf("1: %3ld clock_t\n", measure_time<100000000>(utl::str_to_dbl, str, len));
+    // printf("2: %3ld clock_t\n", measure_time<100000000>(utl::str_to_float, str, len));
+    // printf("1: %3ld clock_t\n", measure_time<100000000>(utl::str_to_dbl, str, len));
+    // printf("2: %3ld clock_t\n", measure_time<100000000>(utl::str_to_float, str, len));
+    // printf("1: %3ld clock_t\n", measure_time<100000000>(utl::str_to_dbl, str, len));
+    // printf("2: %3ld clock_t\n", measure_time<100000000>(utl::str_to_float, str, len));
+    // printf("1: %3ld clock_t\n", measure_time<100000000>(utl::str_to_dbl, str, len));
+    // printf("2: %3ld clock_t\n", measure_time<100000000>(utl::str_to_float, str, len));
+    // printf("1: %3ld clock_t\n", measure_time<100000000>(utl::str_to_dbl, str, len));
+    // printf("2: %3ld clock_t\n", measure_time<100000000>(utl::str_to_float, str, len));
 
-    printf("%f\n", utl::str_to_dbl(str, len));
-    // printf("%f\n", util::str_to_float(str, len));
+    uint8_t arr[] = { 0x54, 0x00, 0x34 };
+
+    utl::log_bits(arr, sizeof(arr) * 8, 0);
+    utl::log_hex(arr, sizeof(arr));
+    utl::log_hex_with_addr(arr, sizeof(arr));
 }
