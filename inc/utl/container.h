@@ -6,6 +6,21 @@
 namespace utl {
 
 /**
+ * @brief Uninitialized storage container for any type.
+ * 
+ * @tparam T Type of the element.
+ */
+template<class T>
+struct storage {
+    // operator T*() const { return reinterpret_cast<const T*>(buf); }
+    operator T*()       { return reinterpret_cast<T*>(buf); } 
+    // auto operator T() const   { return reinterpret_cast<const T*>(buf); }
+    // auto operator T()         { return reinterpret_cast<T*>(buf); } 
+private:
+    alignas(T) unsigned char buf[sizeof(T)];
+};
+
+/**
  * @brief Resizable static vector with pre-allocated memory on stack.
  * 
  * @tparam T Type of elements
@@ -26,13 +41,13 @@ struct svector {
     // Get element at index without const.
     constexpr T& operator[](size_t i)       { return buf[i]; }
     // Get pointer to the beginning of the vector.
-    constexpr T* begin() const              { return buf; }
+    constexpr T* begin() const              { return buf[0]; }
     // Get pointer to the beginning of the vector.
-    constexpr T* begin()                    { return buf; }
+    constexpr T* begin()                    { return buf[0]; }
     // Get pointer to the end of the vector.
-    constexpr T* end() const                { return buf + len; }
+    constexpr T* end() const                { return buf[len]; }
     // Get pointer to the end of the vector.
-    constexpr T* end()                      { return buf + len; }
+    constexpr T* end()                      { return buf[len]; }
     // Get pointer to the beginning of the vector.
     constexpr T* data() const               { return buf; }
     // Get pointer to the beginning of the vector.
@@ -42,7 +57,7 @@ struct svector {
     // Resize the vector.
     constexpr void resize(size_t size)      { if (size <= N) len = size; }
     // Push element to the end of the vector.
-    constexpr void push_back(const T &x)    { if (len < N) buf[len++] = x; }
+    constexpr void push_back(const T &x)    { if (len < N) *buf[len++] = x; }
     // Pop element from the end of the vector.
     constexpr void pop_back()               { if (len > 0) --len; }
     // Erase element at iterator.
@@ -53,7 +68,7 @@ struct svector {
         *p = buf[len];
     }
 private:
-    T buf[N];
+    storage<T> buf[N];
     size_t len = 0;
 };
 
