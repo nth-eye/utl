@@ -2,11 +2,18 @@
 #define UTL_CONTAINER_H
 
 #include "utl/base.h"
-#include <array>
 
 namespace utl {
 namespace detail {
 
+/**
+ * @brief Common static vector implementation independent of the 
+ * underlying storage container.
+ * 
+ * @tparam T Type of elements
+ * @tparam N Maximum number of elements
+ * @tparam Storage Underlying storage
+ */
 template<class T, size_t N, class Storage>
 struct svector_base {
 
