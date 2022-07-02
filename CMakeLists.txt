@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.0.0)
 project(utl VERSION 0.1.0)
 
 add_library(libutl INTERFACE)
+target_include_directories(libutl INTERFACE inc)
 target_compile_features(libutl INTERFACE cxx_std_17)
 target_compile_options(libutl INTERFACE "-Wall" "-Wextra" "-Wpedantic")
-target_include_directories(libutl INTERFACE inc)
 
 add_executable(utl main.cpp)
 target_compile_features(utl PRIVATE cxx_std_17)
