@@ -1,6 +1,6 @@
 # utl
 
-Header-only utility library (`utl::` namespace stands for __UTiL__) with small, simple and common functions, which nevertheless weren't present in C++17 standard library. All functions that can be `constexpr` are. Not intended to become anything serious, but you may find some parts really useful, for example `"float.h"` has IEE 754 half-precision floating point conversion functions. I use it in many projects for embedded systems and in my other libraries, e.g. [zbor][1].
+Header-only utility library (`utl::` namespace stands for __UTiL__) with small, simple and common functions, which nevertheless weren't present in C++17 standard library. All functions that can be `constexpr` are. Not intended to become anything serious, but you may find some parts really useful, for example `"float.h"` has IEE 754 half-precision floating point conversion functions. I use this library in many projects for embedded systems and in my other libraries, e.g. [zbor][1].
 
 ## Dependencies
 

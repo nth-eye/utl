@@ -92,6 +92,27 @@ constexpr T fact(T x)
     return res;
 }
 
+/**
+ * @brief Galois 2^8 field multiplication using Russian 
+ * Peasant Multiplication algorithm.
+ * 
+ * @param x Multiplicand
+ * @param y Multiplier
+ * @return Product
+ */
+constexpr uint8_t gf_mul(uint8_t x, uint8_t y) 
+{
+    uint8_t r = 0; 
+
+    while (y) {
+        if (y & 1)
+            r ^= x; 
+        x = (x << 1) ^ ((x >> 7) * 0x11d);
+        y >>= 1;
+    }
+    return r;
+}
+
 }
 
 #endif
