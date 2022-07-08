@@ -2,6 +2,8 @@
 #define UTL_STR_H
 
 #include "utl/math.h"
+#include "utl/svector.h"
+#include <string_view>
 
 namespace utl {
 
@@ -48,6 +50,47 @@ constexpr double str_to_dbl(const char *str, size_t len)
         }
     }
     return res * neg / ipow(10, dot);
+}
+
+/**
+ * @brief Convert string to integer, malformed input returns 0.
+ * 
+ * @param str Input string
+ * @param len String length
+ * @return Result 
+ */
+constexpr long str_to_int(const char *str, size_t len)
+{
+    if (!str || !len)
+        return 0;
+
+    const auto end = str + len;
+    long neg = 1;
+    long res = 0;
+
+    if (*str == '-') {
+        str += 1;
+        neg = -1;
+    }
+
+    for (; str != end; ++str) {
+        if (*str >= '0' && *str <= '9')
+            res = res * 10 + (*str - '0');
+        else
+            return 0;
+    }
+    return res * neg;
+}
+
+/**
+ * @brief Convert string view to integer, malformed input returns 0.
+ * 
+ * @param sv 
+ * @return Result
+ */
+constexpr long str_to_int(std::string_view sv)
+{
+    return str_to_int(sv.data(), sv.size());
 }
 
 /**
@@ -136,6 +179,31 @@ constexpr size_t bin_to_str(const uint8_t *bin, size_t bin_len, char *str, size_
     *str = 0;
 
     return str_len;
+}
+
+/**
+ * @brief Split string into tokens by given delimiter. Returns 
+ * utl::ce_vector filled with std::string_view tokens.
+ * 
+ * @tparam N Maximum number of tokens
+ * @param str String to split
+ * @param del All delimiters characters
+ * @return Static vector with split string
+ */
+template<size_t N>
+constexpr auto split(std::string_view str, std::string_view del)
+{
+    ce_svector<std::string_view, N> tokens = {};
+
+    size_t head = 0;
+    size_t tail = 0;
+
+    for (size_t i = 0; i < N && tail != std::string_view::npos; ++i) {
+        tail = str.find_first_of(del, head);
+        tokens.push_back(str.substr(head, tail - head));
+        head = str.find_first_not_of(del, tail);
+    }
+    return tokens;
 }
 
 }
