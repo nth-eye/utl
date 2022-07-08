@@ -41,6 +41,17 @@ clock_t exec_time_avg(Args &&...args)
     return exec_time<N>(args...) / N;
 }
 
+/**
+ * @brief Calculate seconds since epoch without timezone correction, 
+ * using days since January 1 instead of month and month day.
+ * 
+ * @param year Years since 1900
+ * @param yday Days since January 1 - [0, 365]
+ * @param hour Hours since midnight – [0, 23]
+ * @param min Minutes after the hour – [0, 59]
+ * @param sec Seconds after the minute - [0, 60]
+ * @return UTC timestamp
+ */
 constexpr int64_t timeutc(int64_t year, int64_t yday, int64_t hour, int64_t min, int64_t sec)
 {
     return sec + min * 60 + hour * 3600 + yday * 86400 +
@@ -48,8 +59,22 @@ constexpr int64_t timeutc(int64_t year, int64_t yday, int64_t hour, int64_t min,
     ((year - 1) / 100) * 86400 + ((year + 299) / 400) * 86400;
 }
 
+/**
+ * @brief Calculate seconds since epoch without timezone correction,
+ * using month and month day instead of days since January 1.
+ * 
+ * @param year Years since 1900
+ * @param month Months since January – [0, 11]
+ * @param mday Day of the month – [1, 31]
+ * @param hour Hours since midnight – [0, 23]
+ * @param min Minutes after the hour – [0, 59]
+ * @param sec Seconds after the minute - [0, 60]
+ * @return UTC timestamp
+ */
 constexpr int64_t timeutc(int64_t year, int64_t month, int64_t mday, int64_t hour, int64_t min, int64_t sec)
 {
+    if (month < 0 || month > 11)
+        return 0;
     constexpr int64_t days[] = {
         31, 28, 31, 30, 
         31, 30, 31, 31, 
@@ -61,6 +86,13 @@ constexpr int64_t timeutc(int64_t year, int64_t month, int64_t mday, int64_t hou
     return timeutc(year, yday, hour, min, sec);
 }
 
+/**
+ * @brief Calculate seconds since epoch without timezone correction,
+ * using C tm struct.
+ * 
+ * @param utc Standard date-time structure
+ * @return UTC timestamp
+ */
 constexpr int64_t timeutc(const tm &utc)
 {
     return utc.tm_mday ? 
@@ -68,7 +100,12 @@ constexpr int64_t timeutc(const tm &utc)
         timeutc(utc.tm_year, utc.tm_yday, utc.tm_hour, utc.tm_min, utc.tm_sec);
 }
 
-constexpr auto compilation_tm()
+/**
+ * @brief Get date and time when the code was compiled as tm struct.
+ * 
+ * @return Standard date-time structure
+ */
+constexpr tm compilation_tm()
 {
     constexpr auto timestr = __DATE__ " " __TIME__;
     constexpr auto tokens = split<6>(timestr, " :");
@@ -96,6 +133,14 @@ constexpr auto compilation_tm()
     return utc;
 }
 
+/**
+ * @brief Get seconds since epoch when the code was compiled, 
+ * without timezone correction. Subtract timezone offset to 
+ * aquire actual local time of compilaiton. Without correction 
+ * it will be same as GMT timestamp.
+ * 
+ * @return UTC timestamp
+ */
 constexpr int64_t compilation_utc()
 {
     return timeutc(compilation_tm());
