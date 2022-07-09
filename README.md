@@ -6,15 +6,15 @@ Header-only utility library (`utl::` namespace stands for __UTiL__) with small, 
 
 Basic requirements are `cstdint` and `cstddef`. Additional are below:
 
-| Header    | Dependency                        |
-| --------- | --------------------------------- |
-| "str.h"   | `<string_view>`                   |
-| "log.h"   | "str.h" + `<cctype>` + `<cstdio>` |
-| "time.h"  | "str.h" + `<ctime>`               |
+| Header        | Dependency                        |
+| ------------- | --------------------------------- |
+| "physics.h"   | `<cmath>`                         |
+| "str.h"       | `<string_view>`                   |
+| "log.h"       | "str.h" + `<cctype>` + `<cstdio>` |
+| "time.h"      | "str.h" + `<ctime>`               |
 
 ## TODO
 
-- [ ] readme
 - [ ] tests
 - [ ] maybe restrict / remove bit offset in `log_bits()` ?
 

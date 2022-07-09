@@ -4,6 +4,9 @@
 #include "utl/base.h"
 
 namespace utl {
+namespace impl {
+inline constexpr double pi = 3.14159265358979323846; // M_PI isn't always defined
+}
 
 /**
  * @brief Unsigned integer division with round up.
@@ -111,6 +114,28 @@ constexpr uint8_t gf_mul(uint8_t x, uint8_t y)
         y >>= 1;
     }
     return r;
+}
+
+/**
+ * @brief Convert decimal degrees to radians.
+ * 
+ * @param deg Decimal degrees
+ * @return Radians
+ */
+constexpr double radians(double deg)
+{
+    return deg * impl::pi / 180.0;
+}
+
+/**
+ * @brief Convert radians to decimal degrees.
+ * 
+ * @param rad Radians
+ * @return Decimal degrees
+ */
+constexpr double degrees(double rad)
+{
+    return rad * 180.0 / impl::pi;
 }
 
 }

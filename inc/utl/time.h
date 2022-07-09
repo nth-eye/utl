@@ -88,7 +88,7 @@ constexpr int64_t timeutc(int64_t year, int64_t month, int64_t mday, int64_t hou
 
 /**
  * @brief Calculate seconds since epoch without timezone correction,
- * using C tm struct.
+ * using tm struct.
  * 
  * @param utc Standard date-time structure
  * @return UTC timestamp

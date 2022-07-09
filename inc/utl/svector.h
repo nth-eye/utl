@@ -4,7 +4,7 @@
 #include "utl/storage.h"
 
 namespace utl {
-namespace detail {
+namespace impl {
 
 /**
  * @brief Common static vector implementation independent of the 
@@ -72,7 +72,7 @@ private:
  * @tparam N Maximum number of elements
  */
 template<class T, size_t N>
-struct svector : detail::svector_base<T, N, storage<T, N>> {};
+struct svector : impl::svector_base<T, N, storage<T, N>> {};
 
 /**
  * @brief Resizable static vector with pre-allocated memory on stack.
@@ -83,7 +83,7 @@ struct svector : detail::svector_base<T, N, storage<T, N>> {};
  * @tparam N Maximum number of elements
  */
 template<class T, size_t N>
-struct ce_svector : detail::svector_base<T, N, ce_storage<T, N>> {};
+struct ce_svector : impl::svector_base<T, N, ce_storage<T, N>> {};
 
 }
 

@@ -53,6 +53,17 @@ constexpr double str_to_dbl(const char *str, size_t len)
 }
 
 /**
+ * @brief Convert string view to double, malformed input returns 0.
+ * 
+ * @param sv Input string view
+ * @return Result
+ */
+constexpr double str_to_dbl(std::string_view sv)
+{
+    return str_to_dbl(sv.data(), sv.size());
+}
+
+/**
  * @brief Convert string to integer, malformed input returns 0.
  * 
  * @param str Input string
@@ -85,7 +96,7 @@ constexpr long str_to_int(const char *str, size_t len)
 /**
  * @brief Convert string view to integer, malformed input returns 0.
  * 
- * @param sv 
+ * @param sv Input string view
  * @return Result
  */
 constexpr long str_to_int(std::string_view sv)

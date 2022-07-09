@@ -11,15 +11,15 @@ namespace utl {
 /**
  * @brief Print hex nicely with relevant ASCII representation.
  * 
- * @param data Data to print
+ * @param dat Data to print
  * @param len Length in bytes
  */
-inline void log_hex(const void *data, size_t len)
+inline void log_hex(const void *dat, size_t len)
 {
-    if (!data || !len)
+    if (!dat || !len)
         return;
 
-    auto p = static_cast<const uint8_t*>(data);
+    auto p = static_cast<const uint8_t*>(dat);
 
     for (size_t i = 0; i < len; ++i) {
 
@@ -63,16 +63,16 @@ inline void log_hex(const void *data, size_t len)
 /**
  * @brief Print bits nicely from offset position with MSB at left and relevant ASCII.
  * 
- * @param data Memory with bits to log
+ * @param dat Memory with bits to log
  * @param len Number of bits
  * @param pos Bit offset in initial byte, be careful to not go out of memory region
  */
-inline void log_bits(const void *data, size_t len, size_t pos)
+inline void log_bits(const void *dat, size_t len, size_t pos)
 {
-    if (!data || !len)
+    if (!dat || !len)
         return;
 
-    auto ptr = static_cast<const uint8_t*>(data);
+    auto ptr = static_cast<const uint8_t*>(dat);
     auto rem = len & 7;
 
     uint8_t line[8];

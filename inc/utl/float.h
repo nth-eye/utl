@@ -4,7 +4,7 @@
 #include "utl/base.h"
 
 namespace utl {
-namespace detail {
+namespace impl {
 
 constexpr uint32_t u32_dec(uint32_t a)              { return a - 1; }
 constexpr uint32_t u32_inc(uint32_t a)              { return a + 1; }
@@ -90,7 +90,7 @@ union Float {
  */
 constexpr uint16_t float_to_half(uint32_t f)
 {
-    using namespace detail;
+    using namespace impl;
 
     constexpr uint32_t one                      = 0x00000001;
     constexpr uint32_t f_s_mask                 = 0x80000000;
@@ -162,7 +162,7 @@ constexpr uint16_t float_to_half(uint32_t f)
  */
 constexpr uint32_t half_to_float(uint16_t h)
 {
-    using namespace detail;
+    using namespace impl;
 
     constexpr uint32_t h_e_mask             = 0x00007c00;
     constexpr uint32_t h_m_mask             = 0x000003ff;

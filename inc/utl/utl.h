@@ -3,6 +3,7 @@
 
 #include "utl/float.h"
 #include "utl/log.h"
+#include "utl/physics.h"
 #include "utl/ring.h"
 #include "utl/time.h"
 
