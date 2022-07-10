@@ -15,6 +15,7 @@ Basic requirements are `cstdint` and `cstddef`. Additional are below:
 
 ## TODO
 
+- [ ] standardize API for containers (svector, ring, etc)
 - [ ] tests
 - [ ] maybe restrict / remove bit offset in `log_bits()` ?
 
